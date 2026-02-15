@@ -19,6 +19,7 @@ jobs:
       contents: write
     env:
       APP_NAME: quick
+      AWS_LC_SYS_PREBUILT_NASM: 1
     strategy:
       matrix:
         target:
