@@ -290,6 +290,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "fastrand"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be"
+
+[[package]]
 name = "find-msvc-tools"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -338,7 +344,7 @@ version = "1.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "49a9d51ce47660b1e808d3c990b4709f2f415d928835a17dfd16991515c46bce"
 dependencies = [
- "fastrand",
+ "fastrand 1.9.0",
  "futures-core",
  "futures-io",
  "memchr",
@@ -957,6 +963,7 @@ dependencies = [
  "select",
  "serde",
  "serde_json",
+ "ua_generator",
  "urlencoding",
 ]
 
@@ -1297,6 +1304,15 @@ checksum = "97d095ae15e245a057c8e8451bab9b3ee1e1f68e9ba2b4fbc18d0ac5237835f2"
 dependencies = [
  "pin-project",
  "tracing",
+]
+
+[[package]]
+name = "ua_generator"
+version = "0.5.49"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "badb92390f6441b293225caefc99693c31de292650ccc5a67168f345b7a11ff6"
+dependencies = [
+ "fastrand 2.3.0",
 ]
 
 [[package]]
