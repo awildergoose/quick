@@ -113,7 +113,11 @@ jobs:
 
       - name: Add MacOS sys Build Dependencies
         if: ${{ contains(matrix.target.runner, 'macos') }}
-        run: brew install openssl@3
+        run: |
+          brew install openssl@3
+          export OPENSSL_LIB_DIR=/usr/local/opt/openssl/bin/openssl
+          export OPENSSL_DIR=/usr/local/opt/openssl/bin/openssl
+          export OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib
 
       # Build time
       - name: Build
