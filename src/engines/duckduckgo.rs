@@ -53,13 +53,17 @@ impl SearchEngine for DuckDuckGo {
 
             // We create a new client per request to avoid bot suspicion
             let client = reqwest::blocking::Client::new();
+            let kl_value = params
+                .iter()
+                .find(|(k, _)| k == "kl")
+                .map_or("wt-wt", |(_, v)| v.as_str());
             let body = apply_headers(
                 client
                     .post("https://lite.duckduckgo.com/lite/")
                     .timeout(Duration::from_secs(30)),
             )
             .header("Content-Type", "application/x-www-form-urlencoded")
-            .header("Cookie", "kl=wt-wt")
+            .header("Cookie", format!("kl={kl_value}"))
             .body(body_string)
             .send()?
             .text()?;

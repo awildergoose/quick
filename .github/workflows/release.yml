@@ -124,8 +124,8 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.APP_NAME }}-${{ matrix.target.rustTarget }}${{ endsWith(matrix.target.rustTarget, '-windows-gnu') && '.exe' || '' }}
-          path: ./target/${{ matrix.target.rustTarget }}/release/${{ env.APP_NAME }}${{ endsWith(matrix.target.rustTarget, '-windows-gnu') && '.exe' || '' }}
+          name: ${{ env.APP_NAME }}-${{ matrix.target.rustTarget }}${{ endsWith(matrix.target.rustTarget, '-windows-msvc') && '.exe' || '' }}
+          path: ./target/${{ matrix.target.rustTarget }}/release/${{ env.APP_NAME }}${{ endsWith(matrix.target.rustTarget, '-windows-msvc') && '.exe' || '' }}
 
       - name: Upload Release Asset
         if: github.event_name == 'release'
@@ -133,5 +133,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cp ./target/${{ matrix.target.rustTarget }}/release/${{ env.APP_NAME }}${{ endsWith(matrix.target.rustTarget, '-windows-gnu') && '.exe' || '' }} ./${{ env.APP_NAME }}-${{ github.ref_name }}-${{ matrix.target.rustTarget }}${{ endsWith(matrix.target.rustTarget, '-windows-gnu') && '.exe' || '' }} &&
-          gh release upload ${{ github.event.release.tag_name }} ./${{ env.APP_NAME }}-${{ github.ref_name }}-${{ matrix.target.rustTarget }}${{ endsWith(matrix.target.rustTarget, '-windows-gnu') && '.exe' || '' }}#"${{ env.APP_NAME }}-${{ github.ref_name }}-${{ matrix.target.rustTarget }} (${{ matrix.target.displayName }})"
+          cp ./target/${{ matrix.target.rustTarget }}/release/${{ env.APP_NAME }}${{ endsWith(matrix.target.rustTarget, '-windows-msvc') && '.exe' || '' }} ./${{ env.APP_NAME }}-${{ github.ref_name }}-${{ matrix.target.rustTarget }}${{ endsWith(matrix.target.rustTarget, '-windows-msvc') && '.exe' || '' }} &&
+          gh release upload ${{ github.event.release.tag_name }} ./${{ env.APP_NAME }}-${{ github.ref_name }}-${{ matrix.target.rustTarget }}${{ endsWith(matrix.target.rustTarget, '-windows-msvc') && '.exe' || '' }}#"${{ env.APP_NAME }}-${{ github.ref_name }}-${{ matrix.target.rustTarget }} (${{ matrix.target.displayName }})"
