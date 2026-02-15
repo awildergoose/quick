@@ -4,7 +4,6 @@ use crate::{
     engines::base::{SearchEngine, SearchResults, apply_headers},
     search_result::SearchResult,
 };
-use isahc::{Request, prelude::*};
 use select::{
     document::Document,
     predicate::{Class, Name},
@@ -52,12 +51,16 @@ impl SearchEngine for DuckDuckGo {
                 .collect::<Vec<_>>()
                 .join("&");
 
+            // We create a new client per request to avoid bot suspicion
+            let client = reqwest::blocking::Client::new();
             let body = apply_headers(
-                Request::post("https://lite.duckduckgo.com/lite/").timeout(Duration::from_secs(30)),
+                client
+                    .post("https://lite.duckduckgo.com/lite/")
+                    .timeout(Duration::from_secs(30)),
             )
             .header("Content-Type", "application/x-www-form-urlencoded")
             .header("Cookie", "kl=wt-wt")
-            .body(body_string)?
+            .body(body_string)
             .send()?
             .text()?;
 

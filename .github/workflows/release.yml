@@ -107,18 +107,6 @@ jobs:
         if: ${{ contains(matrix.target.rustTarget, 'i686-unknown-linux-gnu') }}
         run: sudo apt install -y gcc-multilib
 
-      - name: Add sys Build Dependencies
-        if: ${{ contains(matrix.target.runner, 'linux') }}
-        run: sudo apt install -y openssl
-
-      - name: Add MacOS sys Build Dependencies
-        if: ${{ contains(matrix.target.runner, 'macos') }}
-        run: |
-          brew install openssl@3
-          export OPENSSL_LIB_DIR=/usr/local/opt/openssl/bin/openssl
-          export OPENSSL_DIR=/usr/local/opt/openssl/bin/openssl
-          export OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib
-
       # Build time
       - name: Build
         run: cargo build --release --target ${{ matrix.target.rustTarget }}

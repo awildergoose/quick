@@ -1,4 +1,4 @@
-use isahc::http::request;
+use reqwest::blocking::RequestBuilder;
 
 use crate::search_result::SearchResult;
 
@@ -12,7 +12,7 @@ pub trait SearchEngine {
     fn as_results(&self) -> SearchResults;
 }
 
-pub fn apply_headers(req: request::Builder) -> request::Builder {
+pub fn apply_headers(req: RequestBuilder) -> RequestBuilder {
     req.header("User-Agent", ua_generator::ua::spoof_firefox_windows_ua())
         .header("Accept", "text/html")
         .header("Accept-Language", "en-US,en;q=0.5")
