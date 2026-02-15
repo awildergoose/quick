@@ -9,8 +9,10 @@ struct Args {
     query: String,
     #[arg(short, long, default_value_t = 5)]
     count: usize,
-    #[arg(short, long)]
-    open: bool,
+    #[arg(short, long, value_name = "BROWSER", default_missing_value = "")]
+    open: Option<String>,
+    #[arg(long, default_value_t = false)]
+    quiet: bool,
 }
 
 pub mod engines;
@@ -20,7 +22,6 @@ pub mod search_result;
 fn main() -> anyhow::Result<()> {
     env_logger::builder()
         .filter_level(log::LevelFilter::Info)
-        .filter(Some("quick"), log::LevelFilter::Trace)
         .init();
 
     // let arg = std::env::args().nth(1); // (program name)
@@ -35,8 +36,25 @@ fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     let query = encode_query(&args.query);
     let results = req::search_duckduckgo(&query, args.count)?;
+
     for r in results {
-        println!("{r}");
+        if r.rank == 1 {
+            let url = r.url.clone();
+
+            if let Some(browser) = &args.open {
+                if browser.is_empty() {
+                    if let Err(e) = open::that(url.clone()) {
+                        log::error!("failed to open {url}: {e}");
+                    }
+                } else if let Err(e) = open::with(url.clone(), browser) {
+                    log::error!("failed to open {url}: {e}");
+                }
+            }
+        }
+
+        if !args.quiet {
+            println!("{r}");
+        }
     }
 
     Ok(())
