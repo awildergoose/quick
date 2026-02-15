@@ -19,18 +19,19 @@ jobs:
       contents: write
     env:
       APP_NAME: quick
+      AWS_LC_SYS_PREBUILT_NASM: 1
     strategy:
       matrix:
         target:
           - {
               displayName: 32-bit Windows,
-              rustTarget: i686-pc-windows-gnu,
-              runner: ubuntu-latest,
+              rustTarget: i686-pc-windows-msvc,
+              runner: windows-latest,
             }
           - {
               displayName: 64-bit Windows,
-              rustTarget: x86_64-pc-windows-gnu,
-              runner: ubuntu-latest,
+              rustTarget: x86_64-pc-windows-msvc,
+              runner: windows-latest,
             }
 
           - {
@@ -77,19 +78,10 @@ jobs:
         run: rustup target add ${{ matrix.target.rustTarget }}
 
       - name: Install deps
-        if: ${{ matrix.target.runner != 'macos-latest' }}
-        run: |
-          cargo install cross
-          sudo apt install -y nasm
+        if: ${{ matrix.target.runner == 'ubuntu-latest' }}
+        run: sudo apt install -y nasm
 
-      - name: Build (non-mac)
-        if: ${{ matrix.target.runner != 'macos-latest' }}
-        env:
-          AWS_LC_SYS_PREBUILT_NASM: "1"
-        run: cross build --release --target ${{ matrix.target.rustTarget }}
-
-      - name: Build (mac)
-        if: ${{ matrix.target.runner == 'macos-latest' }}
+      - name: Build
         run: cargo build --release --target ${{ matrix.target.rustTarget }}
 
       - name: Upload Artifact
