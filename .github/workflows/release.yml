@@ -76,9 +76,11 @@ jobs:
       - name: Install Rust targets
         run: rustup target add ${{ matrix.target.rustTarget }}
 
-      - name: Install cross
+      - name: Install deps
         if: ${{ matrix.target.runner != 'macos-latest' }}
-        run: cargo install cross
+        run: |
+          cargo install cross
+          sudo apt install -y nasm
 
       - name: Build (non-mac)
         if: ${{ matrix.target.runner != 'macos-latest' }}
