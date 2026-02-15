@@ -22,24 +22,51 @@ jobs:
     strategy:
       matrix:
         target:
-          - { displayName: 32-bit Windows, rustTarget: i686-pc-windows-gnu }
-          - { displayName: 64-bit Windows, rustTarget: x86_64-pc-windows-gnu }
+          - {
+              displayName: 32-bit Windows,
+              rustTarget: i686-pc-windows-gnu,
+              runner: ubuntu-latest,
+            }
+          - {
+              displayName: 64-bit Windows,
+              rustTarget: x86_64-pc-windows-gnu,
+              runner: ubuntu-latest,
+            }
 
-          - { displayName: 32-bit Linux, rustTarget: i686-unknown-linux-gnu }
-          - { displayName: 64-bit Linux, rustTarget: x86_64-unknown-linux-gnu }
+          - {
+              displayName: 32-bit Linux,
+              rustTarget: i686-unknown-linux-gnu,
+              runner: ubuntu-latest,
+            }
+          - {
+              displayName: 64-bit Linux,
+              rustTarget: x86_64-unknown-linux-gnu,
+              runner: ubuntu-latest,
+            }
           - {
               displayName: ARM32 ARMv6 Linux,
               rustTarget: arm-unknown-linux-gnueabi,
+              runner: ubuntu-latest,
             }
           - {
               displayName: ARM32 ARMv7 Linux,
               rustTarget: armv7-unknown-linux-gnueabihf,
+              runner: ubuntu-latest,
             }
-          - { displayName: ARM64 Linux, rustTarget: aarch64-unknown-linux-gnu }
+          - {
+              displayName: ARM64 Linux,
+              rustTarget: aarch64-unknown-linux-gnu,
+              runner: ubuntu-latest,
+            }
 
-          - { displayName: 64-bit macOS, rustTarget: x86_64-apple-darwin }
+          - {
+              displayName: 64-bit macOS,
+              rustTarget: x86_64-apple-darwin,
+              runner: macos-latest,
+            }
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.target.runner }}
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v5
@@ -50,6 +77,7 @@ jobs:
         run: rustup target add ${{ matrix.target.rustTarget }}
 
       - name: Install cross
+        if: ${{ matrix.target.runner != 'macos-latest' }}
         run: cargo install cross
 
       - name: Build
