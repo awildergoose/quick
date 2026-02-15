@@ -19,7 +19,6 @@ jobs:
       contents: write
     env:
       APP_NAME: quick
-      AWS_LC_SYS_PREBUILT_NASM: 1
     strategy:
       matrix:
         target:
@@ -85,6 +84,8 @@ jobs:
 
       - name: Build (non-mac)
         if: ${{ matrix.target.runner != 'macos-latest' }}
+        env:
+          AWS_LC_SYS_PREBUILT_NASM: "1"
         run: cross build --release --target ${{ matrix.target.rustTarget }}
 
       - name: Build (mac)
