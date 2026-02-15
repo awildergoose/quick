@@ -1,5 +1,14 @@
 [build]
 pre-build = [
+    "apt remove --assume-yes libclang1-3.8",
+    "apt autoremove --assume-yes",
+    "apt install --assume-yes --no-install-recommends clang-8",
     "apt update",
     "apt install -y protobuf-compiler libclang-dev clang build-essential nasm",
+]
+
+[build.env]
+passthrough = [
+    "BINDGEN_EXTRA_CLANG_ARGS",
+    "BINDGEN_EXTRA_CLANG_ARGS=-I/usr/lib/llvm-8/lib/clang/8.0.0/include",
 ]
