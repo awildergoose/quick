@@ -44,21 +44,6 @@ jobs:
               rustTarget: x86_64-unknown-linux-gnu,
               runner: ubuntu-latest,
             }
-          - {
-              displayName: ARM32 ARMv6 Linux,
-              rustTarget: arm-unknown-linux-gnueabi,
-              runner: ubuntu-latest,
-            }
-          - {
-              displayName: ARM32 ARMv7 Linux,
-              rustTarget: armv7-unknown-linux-gnueabihf,
-              runner: ubuntu-latest,
-            }
-          - {
-              displayName: ARM64 Linux,
-              rustTarget: aarch64-unknown-linux-gnu,
-              runner: ubuntu-latest,
-            }
 
           - {
               displayName: 64-bit macOS,
