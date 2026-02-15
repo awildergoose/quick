@@ -80,8 +80,13 @@ jobs:
         if: ${{ matrix.target.runner != 'macos-latest' }}
         run: cargo install cross
 
-      - name: Build
+      - name: Build (non-mac)
+        if: ${{ matrix.target.runner != 'macos-latest' }}
         run: cross build --release --target ${{ matrix.target.rustTarget }}
+
+      - name: Build (mac)
+        if: ${{ matrix.target.runner == 'macos-latest' }}
+        run: cargo build --release --target ${{ matrix.target.rustTarget }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
